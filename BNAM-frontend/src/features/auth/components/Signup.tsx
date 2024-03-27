@@ -1,16 +1,16 @@
-import * as React from "react";
+import React, { useContext } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
+import { Link as RouterLink } from "react-router-dom"
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { AuthContext } from "../context/AuthContext";
 
 function Copyright(props: any) {
   return (
@@ -21,7 +21,7 @@ function Copyright(props: any) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://github.com/JoshuaN18/BNAM">
+      <Link color="inherit" component={RouterLink} to="https://github.com/JoshuaN18/BNAM">
         BNAM
       </Link>{" "}
       {new Date().getFullYear()}
@@ -31,13 +31,11 @@ function Copyright(props: any) {
 }
 
 export default function Signup() {
+  const { registerUser } = useContext(AuthContext)
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    event.preventDefault()
+
+    registerUser(event)
   };
 
   return (
@@ -63,21 +61,29 @@ export default function Signup() {
               <TextField
                 autoComplete="given-name"
                 name="firstName"
-                required
                 fullWidth
                 id="firstName"
-                label="First Name"
+                label="First Name (Not in use)"
                 autoFocus
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                required
                 fullWidth
                 id="lastName"
-                label="Last Name"
+                label="Last Name (Not in use)"
                 name="lastName"
                 autoComplete="family-name"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
               />
             </Grid>
             <Grid item xs={12}>
@@ -102,9 +108,13 @@ export default function Signup() {
               />
             </Grid>
             <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
+              <TextField
+                required
+                fullWidth
+                name="confirm_password"
+                label="Confirm Password"
+                type="password"
+                id="confirm_password"
               />
             </Grid>
           </Grid>
@@ -116,9 +126,9 @@ export default function Signup() {
           >
             Sign Up
           </Button>
-          <Grid container justifyContent="flex-end">
+          <Grid container justifyContent="center">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link component={RouterLink} to="/login" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>

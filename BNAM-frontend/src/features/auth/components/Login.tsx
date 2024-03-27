@@ -1,16 +1,17 @@
-import * as React from "react";
+import React, { useContext } from 'react';
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
+import { Link as RouterLink } from "react-router-dom"
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { AuthContext } from "../context/AuthContext";
+
 
 function Copyright(props: any) {
   return (
@@ -21,7 +22,7 @@ function Copyright(props: any) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://github.com/JoshuaN18/BNAM">
+      <Link color="inherit" component={RouterLink} to="https://github.com/JoshuaN18/BNAM">
         BNAM
       </Link>{" "}
       {new Date().getFullYear()}
@@ -31,13 +32,13 @@ function Copyright(props: any) {
 }
 
 export default function SignIn() {
+  //const {authenticated, setAuthenticated} = useContext(AuthContext)
+  const {loginUser} = useContext(AuthContext)
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    event.preventDefault()
+
+    loginUser(event)
   };
 
   return (
@@ -62,10 +63,10 @@ export default function SignIn() {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
             autoFocus
           />
           <TextField
@@ -78,10 +79,6 @@ export default function SignIn() {
             id="password"
             autoComplete="current-password"
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
           <Button
             type="submit"
             fullWidth
@@ -90,14 +87,9 @@ export default function SignIn() {
           >
             Sign In
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
+          <Grid container justifyContent="center">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link component={RouterLink} to="/register" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
